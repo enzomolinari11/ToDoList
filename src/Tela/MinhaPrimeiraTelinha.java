@@ -30,7 +30,7 @@ public class MinhaPrimeiraTelinha extends javax.swing.JFrame {
 
         jTextField1Nome.addActionListener(this::jTextField1NomeActionPerformed);
 
-        jLabel1.setText("Nome:");
+        jLabel1.setText("Nome");
 
         jTextFieldEndereco.addActionListener(this::jTextFieldEnderecoActionPerformed);
 
