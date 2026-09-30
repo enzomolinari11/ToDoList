@@ -56,11 +56,13 @@ public class TelaToDoList extends javax.swing.JFrame {
         jButtonAdicionarTarefa.addActionListener(this::jButtonAdicionarTarefaActionPerformed);
 
         jButtonConcluirTarefa.setText("Concluir");
+        jButtonConcluirTarefa.addActionListener(this::jButtonConcluirTarefaActionPerformed);
 
         jButtonRemoverTarefa.setText("Remover");
         jButtonRemoverTarefa.addActionListener(this::jButtonRemoverTarefaActionPerformed);
 
         jComboBoxFiltroStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Concluído", "Não Concluído" }));
+        jComboBoxFiltroStatus.addActionListener(this::jComboBoxFiltroStatusActionPerformed);
 
         jTableTarefas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,9 +143,91 @@ public class TelaToDoList extends javax.swing.JFrame {
         
         int opcao = JOptionPane.showConfirmDialog(null, "Deseja realmente Excluir a tarefa?");
         
-        String tarefaSelecionada = recuperarTarefa
+        String tarefaSelecionada = recuperarTarefa(linhaSelecionada);
+        
+        int indiceTarefaSelecionada = tarefas.indexOf(tarefaSelecionada);
+        
+        if(opcao == JOptionPane.YES_OPTION) {
+            int indiceTarefasSelecionadas = 0;
+            tarefas.remove(indiceTarefasSelecionadas);
+            preencherTabela();
+        }
+        
+        filtrarTabela();
+        
+        preencherTabela();
     }//GEN-LAST:event_jButtonRemoverTarefaActionPerformed
 
+    private void jButtonConcluirTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConcluirTarefaActionPerformed
+        int linhaSelecionada = jTableTarefas.getSelectedRow();
+        
+        if (linhaSelecionada < 0){
+            JOptionPane.showMessageDialog(null, "Nenhuma tarefa foi selecionada");
+            return;
+        }
+        String tarefasSelecionada = recuperarTarefa(linhaSelecionada);
+        
+        int indiceTarefaSelecionada = tarefas.indexOf(tarefasSelecionada);
+        
+        String[] dados = tarefas.get(indiceTarefaSelecionada).split(";");
+        int indiceTarefaConcluida = 0;
+        
+        tarefas.set(indiceTarefaConcluida, dados[0] + ";" + CONCLUIDA);
+        
+        filtrarTabela();
+        
+        preencherTabela();
+    }//GEN-LAST:event_jButtonConcluirTarefaActionPerformed
+
+    private void jComboBoxFiltroStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFiltroStatusActionPerformed
+        filtrarTabela();
+        
+        preencherTabela();
+    }//GEN-LAST:event_jComboBoxFiltroStatusActionPerformed
+
+    private void filtarTabela(){
+        int opcao = jComboBoxFiltroStatus.getSelectedIndex();
+        tarefasFiltradas.clear();
+        
+        String[] dados;
+        
+        for(String tarefa : tarefas){
+            dados = tarefa.split(";");
+            
+            switch (opcao){
+                case 0:
+                    tarefasFiltradas.add(tarefa);
+                    break;
+                case 1:
+                    if(dados[1].equals(CONCLUIDA)){
+                        tarefasFiltradas.add(tarefa);
+                    }
+                    
+                    break;
+                case 2:
+                    if(dados[1].equals(NAO_CONCLUIDA)){
+                        tarefasFiltradas.add(tarefa);  
+                    }
+                    
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }  
+    }
+    
+    
+    public boolean hasTarefaRepetida(String novaTarefa){
+            for (String tarefa : tarefas){
+                String dados[] = tarefa.split(";");
+                
+                if (novaTarefa.toLowerCase().equals(dados[0].toLowerCase()))
+                    return true;
+            }
+    
+            return false;
+    }
+    
     
     /**
      * @param args the command line arguments
@@ -179,4 +263,16 @@ public class TelaToDoList extends javax.swing.JFrame {
     private javax.swing.JTable jTableTarefas;
     private javax.swing.JTextField jTextFieldDescricaoTarefa;
     // End of variables declaration//GEN-END:variables
+
+    private void preencherTabela() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void filtrarTabela() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private String recuperarTarefa(int linhaSelecionada) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
